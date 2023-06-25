@@ -3,7 +3,7 @@
 
 :root {
   --maincolor: #066464;
-  --bgcolor: #dde1e7
+  --bgcolor: #ebecf0
 }
 
 * {
@@ -54,12 +54,19 @@ h2 {
   width: 101%;
 }
 
-.botoes > button {
+.botoes > a {
+  background-color: transparent;
+  border-style: none;
+  text-decoration: none;
+}
+
+.botoes > a > button {
   display: flex;
   padding: 20px;
   margin: 15px 15px 0px 0px;
   font-size: 18pt;
   font-weight: 300;
+  min-width: 550px;
   border-radius: 16px;
   text-align: left;
   gap: 25px;
@@ -71,14 +78,16 @@ h2 {
   align-items: center;
   box-shadow: 8px 8px 12px -2px rgba(72, 79, 96, 0.4), -6px -6px 12px -1px white;
   cursor: pointer;
+  
 }
 
-.botoes > button:hover {
+
+.botoes > a > button:hover {
   box-shadow: none;
   border-color: var(--maincolor);
 }
 
-.botoes > button:active {
+.botoes > a> button:active {
   box-shadow: inset -5px -5px 8px 0px white, inset 2px 2px 11px 0px rgb(31 36 49 / 44%);
   border-color: rgb(255, 255, 255);
 }
@@ -90,7 +99,7 @@ h2 {
 .calculadora {
   display: flexbox;
   margin-left: 50px;
-  padding-left: 50px;
+  padding: 40px;
   background: #dde1e7;
   height: 1000px;
   min-width: 600px;

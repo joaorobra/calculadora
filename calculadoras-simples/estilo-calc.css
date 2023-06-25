@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbit&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+main {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+.icone-main {
+  display: flex;
+  margin: auto;
+}
+
+input {
+  width: 400px;
+  border-radius: 32px;
+  height: 30pt;
+  border-style: none;
+  background-color: #f5fdff75;
+  text-align: center;
+  margin: 4px;
+  color: #6c7587;
+  font-size: 18pt;
+  font-family: "Roboto";
+  font-weight: 300;
+  box-shadow: inset -4px -4px 6px -1px white,
+    inset 2px 2px 8px -1px rgba(72, 79, 96, 0.5);
+}
+
