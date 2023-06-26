@@ -3,7 +3,7 @@
 
 :root {
   --maincolor: #066464;
-  --bgcolor: #ebecf0
+  --bgcolor: #ebecf0;
 }
 
 * {
@@ -12,7 +12,7 @@
   padding: 0;
 }
 
-body{
+body {
   height: 100vh;
   background: var(--bgcolor);
   display: flex;
@@ -23,7 +23,7 @@ body{
 main {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap
+  flex-wrap: wrap;
 }
 
 .boas-vindas {
@@ -80,29 +80,33 @@ h2 {
   align-items: center;
   box-shadow: 8px 8px 12px -2px rgba(72, 79, 96, 0.4), -6px -6px 12px -1px white;
   cursor: pointer;
-  
 }
-
 
 .botoes > a > button:hover {
   box-shadow: none;
   border-color: var(--maincolor);
 }
 
-.botoes > a> button:active {
-  box-shadow: inset -5px -5px 8px 0px white, inset 2px 2px 11px 0px rgb(31 36 49 / 44%);
+.botoes > a > button:active {
+  box-shadow: inset -5px -5px 8px 0px white,
+    inset 2px 2px 11px 0px rgb(31 36 49 / 44%);
   border-color: rgb(255, 255, 255);
 }
 
-.botoes > a> button:focus {
+.botoes > a > button:focus {
   border-color: rgb(255, 255, 255);
   background-color: #066464;
-  box-shadow: inset -5px -5px 8px 0px rgba(255, 255, 255, 0.274), inset 2px 2px 11px 0px rgb(31 36 49 / 44%);
+  box-shadow: inset -5px -5px 8px 0px rgba(255, 255, 255, 0.274),
+    inset 2px 2px 11px 0px rgb(31 36 49 / 44%);
   color: white;
 
-  .icon { width: 60px; filter: brightness(100); /* isso vai girar a tonalidade das imagens em 180 graus */ }
+  .icon {
+    width: 60px;
+    filter: brightness(
+      100
+    ); /* isso vai girar a tonalidade das imagens em 180 graus */
+  }
 }
-
 
 .icon {
   width: 60px;
@@ -115,10 +119,95 @@ h2 {
   background: #dde1e7;
   height: auto;
   min-width: 601px;
-  box-shadow: inset -5px -5px 9px rgba(255,255,255,0.45), inset 5px 5px 9px rgba(94,104,121,0.3);
+  box-shadow: inset -5px -5px 9px rgba(255, 255, 255, 0.45),
+    inset 5px 5px 9px rgba(94, 104, 121, 0.3);
   border-radius: 10px;
 }
 
 .seletor {
   margin-right: 0;
+}
+
+
+
+@media only screen and (max-width: 900px) {
+
+  main{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Reduzindo a largura do menu */
+  .boas-vindas {
+    width: 80%;
+    margin: 50% auto auto auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-bottom: solid 5px #066464;
+
+  }
+
+  h1{
+    font-size: 24pt;
+    line-height: 0.7em;
+  }
+
+  h2{
+    font-size: 14pt;
+  }
+
+
+  /* Mudando o layout dos botões para duas colunas */
+  .botoes {
+    margin:auto
+    padding-top: 25px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 25px;
+  }
+  /* Reduzindo o tamanho dos botões */
+  .botoes > a > button {
+    min-width: 350px;
+    width: 75%;
+    margin:auto;
+    font-size: 14pt;
+    margin-bottom: 10px;
+
+  .icon {
+    width: 9%;
+  }
+
+  }
+
+  .botoes > a > button:focus {
+    border-color: rgb(255, 255, 255);
+    background-color: #066464;
+    box-shadow: inset -5px -5px 8px 0px rgba(255, 255, 255, 0.274),
+      inset 2px 2px 11px 0px rgb(31 36 49 / 44%);
+    color: white;
+
+    .icon {
+      width: 9%;
+      filter: brightness(
+        100
+      ); /* isso vai girar a tonalidade das imagens em 180 graus */
+    }
+  }
+
+  .botoes > a > button:hover {
+    box-shadow: none;
+    border-color: var(--maincolor);
+  }
+  /* Colocando a calculadora embaixo do seletor */
+  .calculadora {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* Reduzindo a largura da calculadora */
+  .calculadora {
+    min-width: auto;
+  }
 }
