@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aposentadoria</title>
+    <link rel="stylesheet" href="estilo-calc.css" />
+  </head>
+  <body>
+    <main>
+      <img class="icone-main" src="../icons/cottage.png" alt="" />
+      <h1>Aposentadoria</h1>
+      <input
+        type="number"
+        name="renda-desejada"
+        id="irendadesejada"
+        placeholder="renda desejada"
+      />
+      <input
+        type="date"
+        name="nascimento"
+        id="inascimento"
+        placeholder="data de nascimento"
+      />
+      <input
+        type="number"
+        name="idade-aposentadoria"
+        id="iidadeaposentadoria"
+        placeholder="idade de aposentadoria"
+      />
+      <input
+        type="number"
+        name="montanteatual"
+        id="imontante"
+        placeholder="patrimônio atual"
+      />
+
+      <button id="calcular">calcular agora</button>
+
+      <output id="iaportenecessario"></output>
+      <label for="iaportenecessario">Aporte mensal necessário</label>
+      <output id="imontantenecessario"></output>
+      <label for="imontantenecessario">Montante necessário</label>
+    </main>
+    <script>
+      // Definir a função calcular
+
+      // Selecionar o botão 'calcular'
+      let botao = document.getElementById("calcular");
+
+      // Adicionar um event listener para o botão
+      botao.addEventListener("click", function () {
+        // Chamar a função calcular
+        calcular();
+      });
+
+      function calcular() {
+        let rendaDesejada = Number(
+          document.getElementById("irendadesejada").value
+        );
+        let nascimento = new Date(document.getElementById("inascimento").value);
+        let idadeAposentadoria = Number(
+          document.getElementById("iidadeaposentadoria").value
+        );
+        let montanteAtual = Number(document.getElementById("imontante").value);
+
+        // Calcular a taxa de juros mensal
+        let taxaMensalPre = 0.0033;
+        let taxaMensalPos = 0.0029;
+
+        // Calcular o número de meses entre a idade de aposentadoria e a data atual
+        let hoje = new Date();
+        let idadeAtual = hoje.getFullYear() - nascimento.getFullYear();
+        let mesesRestantes = (idadeAposentadoria - idadeAtual) * 12;
+
+        // Calcular o valor do montante necessário usando a fórmula dos juros compostos
+        let montanteNecessario = rendaDesejada / taxaMensalPos;
+
+        // Calcular o valor do aporte mensal usando a fórmula
+        let aporteMensal =
+          ((montanteNecessario - montanteAtual) *
+            (1 + taxaMensalPre) ** mesesRestantes) /
+          ((1 + taxaMensalPre) ** mesesRestantes / taxaMensalPre);
+
+        // Arredondar os valores para duas casas decimais
+        aporteMensal = Math.round(aporteMensal * 100) / 100;
+        montanteNecessario = Math.round(montanteNecessario * 100) / 100;
+
+        // Exibir os resultados no output
+        document.querySelector("output#iaportenecessario").textContent =
+          Intl.NumberFormat("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          }).format(aporteMensal);
+
+        document.querySelector("output#imontantenecessario").textContent =
+          Intl.NumberFormat("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          }).format(montanteNecessario);
+      }
+
+      // Selecionar todos os elementos <input> do formulário
+      let inputs = document.querySelectorAll("input");
+
+      // Adicionar um event listener para cada input
+      for (let input of inputs) {
+        input.addEventListener("input", function () {
+          // Chamar a função calcular
+          calcular();
+        });
+      }
+    </script>
+  </body>
+</html>
