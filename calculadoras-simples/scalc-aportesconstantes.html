@@ -1,18 +1,77 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Aportes constantes</title>
-    <link rel="stylesheet" href="estilo-calc.css">
-</head>
-<body>
+    <link rel="stylesheet" href="estilo-calc.css" />
+  </head>
+  <body>
     <main>
-        <img class="icone-main" src="../icons/savings.png" alt="">
-        <h1>Aportes Constantes</h1>
-        <input type="text" form="Aportes">
-        <input type="text" name="a" id="" placeholder="R$ 0,00">
-        <input type="range" name="scroll" id="">
+      <img class="icone-main" src="../icons/savings.png" alt="" />
+      <h1>Aportes Constantes</h1>
+
+      <input
+        type="number"
+        name="naportes"
+        placeholder="quantidade de meses"
+        id="inaportes"
+        min="0"
+      />
+
+      <input
+        type="number"
+        name="aporte"
+        id="iaporte"
+        placeholder="valor do aporte mensal"
+        min="0"
+      />
+
+      <input
+        type="number"
+        name="inicial"
+        id="iinicial"
+        placeholder="valor inicial"
+        min="0"
+      />
+
+      <input
+        type="number"
+        name="taxames"
+        id="itaxa"
+        placeholder="taxa de retorno ao mês"
+        min="0"
+      />
+
+      <button id="calcular">Calcular</button>
+
+      <output name="montante-final" id="monfinal"></output>
+
+      <script>
+        function montanteFinal(A, i, n, P) {
+          // P é o valor inicial
+          i = i / 100;
+          return P * Math.pow(1 + i, n) + (A * (Math.pow(1 + i, n) - 1)) / i; // usa a fórmula de juros compostos
+        }
+
+        var calcular = document.getElementById("calcular");
+        var inaportes = document.getElementById("inaportes");
+        var iaporte = document.getElementById("iaporte");
+        var iinicial = document.getElementById("iinicial");
+        var itaxa = document.getElementById("itaxa");
+        var monfinal = document.getElementById("monfinal");
+
+        calcular.addEventListener("click", function () {
+          var naportes = parseFloat(inaportes.value);
+          var aporte = parseFloat(iaporte.value);
+          var inicial = parseFloat(iinicial.value);
+          var taxames = parseFloat(itaxa.value);
+
+          var montante = montanteFinal(aporte, taxames, naportes, inicial); // passa o valor inicial como quarto argumento
+
+          monfinal.textContent = "R$ " + montante.toFixed(2);
+        });
+      </script>
     </main>
-</body>
+  </body>
 </html>
