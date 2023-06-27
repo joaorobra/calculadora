@@ -17,14 +17,12 @@ main {
 
 }
 
-
-
 .icone-main {
   display: flex;
   margin: auto;
 }
 
-input {
+input.numbers {
   width: 400px;
   border-radius: 32px;
   height: 30pt;
@@ -38,6 +36,14 @@ input {
   font-weight: 300;
   box-shadow: inset -4px -4px 6px -1px white,
     inset 2px 2px 8px -1px rgba(72, 79, 96, 0.5);
+}
+
+.radios {
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  align-items: baseline;
+
 }
 
 output {
@@ -87,7 +93,6 @@ label {
 }
 
 
-
 @media (max-width: 600px) {
 
     * {  background-color: #ebecf0;}
@@ -101,7 +106,7 @@ label {
     margin-top: 40%;
   }
 
-  input {
+  input.numbers {
     width: 90%;
     font-size: 15pt;
   }
@@ -117,3 +122,5 @@ label {
     margin: 10 px;
   }
 }
+
+

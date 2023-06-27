@@ -11,7 +11,7 @@
       <img class="icone-main" src="../icons/savings.png" alt="" />
       <h1>Aportes Constantes</h1>
 
-      <input
+      <input class="numbers"
         type="number"
         name="naportes"
         placeholder="quantidade de meses"
@@ -19,7 +19,7 @@
         min="0"
       />
 
-      <input
+      <input class="numbers"
         type="number"
         name="aporte"
         id="iaporte"
@@ -27,7 +27,7 @@
         min="0"
       />
 
-      <input
+      <input class="numbers"
         type="number"
         name="inicial"
         id="iinicial"
@@ -35,7 +35,7 @@
         min="0"
       />
 
-      <input
+      <input class="numbers"
         type="number"
         name="taxames"
         id="itaxa"
@@ -45,7 +45,7 @@
 
       <button id="calcular">Calcular</button>
 
-      <output name="montante-final" id="monfinal"></output>
+      <output name="montante-final" id="imonfinal"></output>
 
       <script>
         function montanteFinal(A, i, n, P) {
@@ -59,7 +59,7 @@
         var iaporte = document.getElementById("iaporte");
         var iinicial = document.getElementById("iinicial");
         var itaxa = document.getElementById("itaxa");
-        var monfinal = document.getElementById("monfinal");
+        var monfinal = document.getElementById("imonfinal");
 
         calcular.addEventListener("click", function () {
           var naportes = parseFloat(inaportes.value);
@@ -69,7 +69,11 @@
 
           var montante = montanteFinal(aporte, taxames, naportes, inicial); // passa o valor inicial como quarto argumento
 
-          monfinal.textContent = "R$ " + montante.toFixed(2);
+          document.querySelector("output#imonfinal").textContent =
+          Intl.NumberFormat("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          }).format(montante);
         });
       </script>
     </main>

@@ -11,29 +11,42 @@
       <img class="icone-main" src="../icons/cottage.png" alt="" />
       <h1>Aposentadoria</h1>
       <input
+        class="numbers"
         type="number"
         name="renda-desejada"
         id="irendadesejada"
         placeholder="renda desejada"
       />
       <input
+        class="numbers"
         type="date"
         name="nascimento"
         id="inascimento"
         placeholder="data de nascimento"
       />
       <input
+        class="numbers"
         type="number"
         name="idade-aposentadoria"
         id="iidadeaposentadoria"
         placeholder="idade de aposentadoria"
       />
       <input
+        class="numbers"
         type="number"
         name="montanteatual"
         id="imontante"
         placeholder="patrimônio atual"
       />
+
+      <div
+        style="margin-top: 20px; font-family: 'Roboto'; font-weight: 300"
+      >
+        <input type="radio" class="radios" id="independencia" name="tipoaposentadoria" />
+        Independência Financeira
+        <input type="radio" class="radios" id="consumo" name="tipoaposentadoria" /> Consumo de
+        Patrimônio
+      </div>
 
       <button id="calcular">calcular agora</button>
 
@@ -42,35 +55,26 @@
       <output id="imontantenecessario"></output>
       <label for="imontantenecessario">Montante necessário</label>
     </main>
+
     <script>
       // Definir a função calcular
-
-      // Selecionar o botão 'calcular'
-      let botao = document.getElementById("calcular");
-
-      // Adicionar um event listener para o botão
-      botao.addEventListener("click", function () {
-        // Chamar a função calcular
-        calcular();
-      });
-
-      function calcular() {
-        let rendaDesejada = Number(
-          document.getElementById("irendadesejada").value
-        );
+      function independenciaFinanceira() {
+        let rendaDesejada = document.getElementById("irendadesejada").value;
         let nascimento = new Date(document.getElementById("inascimento").value);
         let idadeAposentadoria = Number(
           document.getElementById("iidadeaposentadoria").value
         );
         let montanteAtual = Number(document.getElementById("imontante").value);
 
+        // Calcular a idade atual
+        let hoje = new Date();
+        let idadeAtual = hoje.getFullYear() - nascimento.getFullYear();
+
         // Calcular a taxa de juros mensal
         let taxaMensalPre = 0.0033;
         let taxaMensalPos = 0.0029;
 
         // Calcular o número de meses entre a idade de aposentadoria e a data atual
-        let hoje = new Date();
-        let idadeAtual = hoje.getFullYear() - nascimento.getFullYear();
         let mesesRestantes = (idadeAposentadoria - idadeAtual) * 12;
 
         // Calcular o valor do montante necessário usando a fórmula dos juros compostos
@@ -78,9 +82,8 @@
 
         // Calcular o valor do aporte mensal usando a fórmula
         let aporteMensal =
-          ((montanteNecessario - montanteAtual) *
-            (1 + taxaMensalPre) ** mesesRestantes) /
-          ((1 + taxaMensalPre) ** mesesRestantes / taxaMensalPre);
+          ((montanteNecessario - montanteAtual) * taxaMensalPre) /
+          ((1 + taxaMensalPre) ** mesesRestantes - 1);
 
         // Arredondar os valores para duas casas decimais
         aporteMensal = Math.round(aporteMensal * 100) / 100;
@@ -98,18 +101,80 @@
             style: "currency",
             currency: "BRL",
           }).format(montanteNecessario);
+
+        aporteMensal = null;
       }
 
-      // Selecionar todos os elementos <input> do formulário
-      let inputs = document.querySelectorAll("input");
+      function aposentadoriaConsumo() {
+        let rendaDesejada = document.getElementById("irendadesejada").value;
+        let nascimento = new Date(document.getElementById("inascimento").value);
+        let idadeAposentadoria = Number(
+          document.getElementById("iidadeaposentadoria").value
+        );
+        let montanteAtual = Number(document.getElementById("imontante").value);
 
-      // Adicionar um event listener para cada input
-      for (let input of inputs) {
-        input.addEventListener("input", function () {
-          // Chamar a função calcular
-          calcular();
-        });
+        // Calcular a idade atual
+        let hoje = new Date();
+        let idadeAtual = hoje.getFullYear() - nascimento.getFullYear();
+
+        // Calcular a taxa de juros mensal
+        let taxaMensalPre = 0.0033;
+        let taxaMensalPos = 0.0029;
+
+        // Calcular o número de meses entre a idade de aposentadoria e a data atual
+        let mesesRestantes = (idadeAposentadoria - idadeAtual) * 12;
+
+        // Idade limite para consumo
+        let idadeLimite = 95;
+
+        // Cálculo do número de meses após a aposentadoria
+        let mesesAposentado = (idadeLimite - idadeAposentadoria) * 12;
+
+        // Cálculo do montante necessário na data da aposentadoria
+        let montanteNecessario =
+          rendaDesejada *
+          ((1 - Math.pow(1 + taxaMensalPos, -mesesAposentado)) / taxaMensalPos);
+
+        // Cálculo do aporte mensal necessário até a aposentadoria
+        let aporteMensal =
+          ((montanteNecessario -
+            montanteAtual * Math.pow(1 + taxaMensalPre, mesesRestantes)) *
+            taxaMensalPre) /
+          (Math.pow(1 + taxaMensalPre, mesesRestantes) - 1);
+
+        // Exibir os resultados no output
+        document.querySelector("output#iaportenecessario").textContent =
+          Intl.NumberFormat("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          }).format(aporteMensal);
+
+        document.querySelector("output#imontantenecessario").textContent =
+          Intl.NumberFormat("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          }).format(montanteNecessario);
       }
+
+      // Selecionar o botão calcular
+      let botao = document.getElementById("calcular");
+
+      // Adicionar um evento de clique ao botão
+      botao.addEventListener("click", function () {
+        // Selecionar os elementos RADIO
+        let independencia = document.getElementById("independencia");
+        let consumo = document.getElementById("consumo");
+
+        // Verificar qual RADIO está marcado e chamar a função correspondente
+        if (independencia.checked) {
+          independenciaFinanceira();
+        } else if (consumo.checked) {
+          aposentadoriaConsumo();
+        } else {
+          // Caso nenhum RADIO esteja marcado, exibir uma mensagem de erro
+          alert("Por favor, selecione um tipo de aposentadoria.");
+        }
+      });
     </script>
   </body>
 </html>
