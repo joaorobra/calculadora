@@ -11,7 +11,8 @@
       <img class="icone-main" src="../icons/savings.png" alt="" />
       <h1>Aportes Constantes</h1>
 
-      <input class="numbers"
+      <input
+        class="numbers"
         type="number"
         name="naportes"
         placeholder="quantidade de meses"
@@ -19,7 +20,8 @@
         min="0"
       />
 
-      <input class="numbers"
+      <input
+        class="numbers"
         type="number"
         name="aporte"
         id="iaporte"
@@ -27,7 +29,8 @@
         min="0"
       />
 
-      <input class="numbers"
+      <input
+        class="numbers"
         type="number"
         name="inicial"
         id="iinicial"
@@ -35,7 +38,8 @@
         min="0"
       />
 
-      <input class="numbers"
+      <input
+        class="numbers"
         type="number"
         name="taxames"
         id="itaxa"
@@ -70,10 +74,10 @@
           var montante = montanteFinal(aporte, taxames, naportes, inicial); // passa o valor inicial como quarto argumento
 
           document.querySelector("output#imonfinal").textContent =
-          Intl.NumberFormat("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          }).format(montante);
+            Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(montante);
         });
       </script>
     </main>
