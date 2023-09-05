@@ -14,7 +14,7 @@
 
 body {
   height: 100vh;
-  background: var(--bgcolor);
+  background-image: url("https://images.unsplash.com/photo-1554224154-26032ffc0d07?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1652&q=80");
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,6 +22,9 @@ body {
 
 main {
   display: flex;
+  background-color:var(--bgcolor);
+  border-radius: 16px;
+  padding: 200px 200px;
   justify-content: center;
   flex-wrap: wrap;
 }

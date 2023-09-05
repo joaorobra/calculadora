@@ -94,28 +94,41 @@
       }
       // Função para calcular o desconto do IRRF
       function calcularIRRF(salario, dependentes, descontos) {
+
+        const faixaUm = 1903.98;
+        const faixaDois = 2826.65;
+        const faixaTres = 3757.05;
+        const faixaQuatro = 4664.68;
+
         let base =
           salario - calcularINSS(salario) - dependentes * 189.59 - descontos;
-        let aliquota, parcela;
-        if (base <= 2112) {
-          aliquota = 0;
-          parcela = 0;
-        } else if (base <= 2826.64) {
-          aliquota = 0.075;
-          parcela = 158.4;
-        } else if (base <= 3751.05) {
-          aliquota = 0.15;
-          parcela = 354.8;
-        } else if (base <= 4664.68) {
-          aliquota = 0.225;
-          parcela = 636.13;
-        } else {
-          aliquota = 0.275;
-          parcela = 869.36;
-        }
-        return base * aliquota - parcela;
-      }
 
+          if (base < faixaUm) {
+            return 0;
+          }
+          if ((base >= faixaUm, base < faixaDois)) {
+            return faixaUm * 0.075 - 142.80;
+          } else if ((base >= faixaDois, base < faixaTres)) {
+            return (
+              faixaUm * 0.075 +
+              (faixaDois - faixaUm) * 0.09 +
+              (salario - faixaDois) * 0.12
+            );
+          } else if ((base >= faixaTres, base < faixaQuatro)) {
+            return (
+              faixaUm * 0.075 +
+              (faixaDois - faixaUm) * 0.09 +
+              (faixaTres - faixaDois) * 0.12 +
+              (base - faixaTres) * 0.14
+            );
+          } else if (base >= faixaQuatro) {
+            return (
+              faixaUm * 0.075 +
+              (faixaDois - faixaUm) * 0.09 +
+              (faixaTres - faixaDois) * 0.12 +
+              (faixaQuatro - faixaTres) * 0.14)
+      }
+    }
       // Função para calcular o salário líquido
       function calcularLiquido(salario, dependentes, descontos) {
         return (
