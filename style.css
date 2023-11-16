@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 
 :root {
-  --maincolor: #066464;
+  --maincolor: rgb(76, 105, 86);
   --bgcolor: #ebecf0;
 }
 
@@ -98,7 +98,7 @@ h2 {
 
 .botoes > a > button:focus {
   border-color: rgb(255, 255, 255);
-  background-color: #066464;
+  background-color: var(--maincolor);
   box-shadow: inset -5px -5px 8px 0px rgba(255, 255, 255, 0.274),
     inset 2px 2px 11px 0px rgb(31 36 49 / 44%);
   color: white;
@@ -113,6 +113,7 @@ h2 {
 
 .icon {
   width: 60px;
+  filter: brightness(130%) saturate(30%) hue-rotate(-39deg);
 }
 
 .calculadora {
@@ -151,7 +152,7 @@ h2 {
     margin: 50% auto auto auto;
     padding-left: 15px;
     padding-right: 15px;
-    border-bottom: solid 5px #066464;
+    border-bottom: solid 5px --maincolor;
   }
 
   h1{
@@ -191,7 +192,7 @@ h2 {
 
   .botoes > a > button:focus {
     border-color: rgb(255, 255, 255);
-    background-color: #066464;
+    background-color: var(--maincolor);
     box-shadow: inset -5px -5px 8px 0px rgba(255, 255, 255, 0.274),
       inset 2px 2px 11px 0px rgb(31 36 49 / 44%);
     color: white;
