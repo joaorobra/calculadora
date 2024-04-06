@@ -4,6 +4,7 @@
 :root {
   --maincolor: rgb(76, 105, 86);
   --bgcolor: #ebecf0;
+  --tomaincolor: brightness(130%) saturate(30%) hue-rotate(-39deg)
 }
 
 * {
@@ -120,7 +121,7 @@ h2 {
   margin-left: 50px;
   padding: 40px;
   background: #dde1e7;
-  height: 700px;
+  height: 777px;
   min-width: 601px;
   box-shadow: inset -5px -5px 9px rgba(255, 255, 255, 0.45),
     inset 5px 5px 9px rgba(94, 104, 121, 0.3);
