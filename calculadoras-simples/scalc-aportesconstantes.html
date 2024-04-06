@@ -52,10 +52,9 @@
       <output name="montante-final" id="imonfinal"></output>
 
       <script>
-        function montanteFinal(A, i, n, P) {
-          // P é o valor inicial
-          i = i / 100;
-          return P * Math.pow(1 + i, n) + (A * (Math.pow(1 + i, n) - 1)) / i; // usa a fórmula de juros compostos
+        function montanteFinal(p, j, n) {
+          j = j / 100; // A taxa de juros j é convertida de percentual para decimal
+          return p * ((Math.pow(1 + j, n) - 1) / j); // Aplica a fórmula do valor futuro
         }
 
         var calcular = document.getElementById("calcular");
