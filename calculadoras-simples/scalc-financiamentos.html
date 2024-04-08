@@ -21,11 +21,23 @@
   
     .inputs-container {
       justify-items: center;
+      padding-right: 2px;
     }
     /* Estilo adicional para garantir que a tabela não fique muito apertada */
     .tabela-container {
-      padding-left: 20px;
+      padding: 10px;
+      background: #dde1e7;
+      height: auto;
+      box-shadow: inset -5px -5px 9px rgba(255, 255, 255, 0.45),
+        inset 5px 5px 9px rgba(94, 104, 121, 0.3);
+      border-radius: 10px;
+    }
       /* Adiciona um pouco de espaço à esquerda da tabela */
+    .separador{
+      background-color: rgb(128, 128, 128);
+      width: 1px;
+      height: 450px;
+      padding: auto;
     }
 
     table {
@@ -39,6 +51,7 @@
       text-align: center;
       padding: 8px;
       border: 1px solid #ddd; /* Bordas cinza claro */
+      background-color: #f1f1f1;
     }
 
     th {
@@ -63,7 +76,7 @@
   <main>
     <h1>Custos Automóvel</h1>
 
-    <div class="container" style="padding: 30pt; gap:10%">
+    <div class="container" style="padding: 30pt; gap:3%">
       <div class="inputs-container" style="display: grid;">
         <input type="number" class="numbers" id="precoAutomovel" placeholder="Preço do Automóvel">
         <input type="number" class="numbers" id="valorEntrada" placeholder="Valor pago de entrada">
@@ -83,6 +96,7 @@
           <label for="valorParcela">Valor da Parcela</label>
         </div>
       </div>
+        <div class="separador"></div>
       <div class="tabela-container">
         <table id="tabelaAmortizacao">
           <thead>
