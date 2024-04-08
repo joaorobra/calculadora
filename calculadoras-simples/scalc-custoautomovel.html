@@ -1,17 +1,190 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Custos Automóvel</title>
-    <link rel="stylesheet" href="estilo-calc.css" />
-  </head>
-  <body>
-    <main>
-      <img class="icone-main" src="../icons/directions_car.png" alt="" />
-      <h1>Custo de Transporte</h1>
-      l<input type="text" form="Aportes" class="numbers" />
-      <input type="text" name="a" id="" placeholder="R$ 0,00" class="numbers" />
-    </main>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custos Automóvel</title>
+  <style>
+    .container {
+      display: flex;
+      justify-content: space-between;
+      /* Alinha os filhos espaçando igualmente entre eles */
+      align-items: start;
+      /* Alinha os itens ao início, mantendo-os alinhados no topo */
+    }
+  
+    .inputs-container,
+    .tabela-container {
+      flex: 1;
+      /* Faz com que ambos os contêineres ocupem espaço igual no contêiner pai, mas você pode ajustar conforme necessário */
+    }
+  
+    .inputs-container {
+      justify-items: center;
+    }
+    /* Estilo adicional para garantir que a tabela não fique muito apertada */
+    .tabela-container {
+      padding-left: 20px;
+      /* Adiciona um pouco de espaço à esquerda da tabela */
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-family: monospace;
+      table-layout: auto; /* Assegura ajuste automático das colunas */
+    }
+
+    th, td {
+      text-align: center;
+      padding: 8px;
+      border: 1px solid #ddd; /* Bordas cinza claro */
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    /* Adiciona bordas às células da tabela */
+    td {
+      border-right: 1px solid #f1f1f1;
+      border-bottom: 1px solid #f1f1f1;
+    }
+
+    /* Estilo para os números (não é possível fazer separação de milhar somente com CSS) */
+    .number {
+      text-align: right;
+    }
+
+  </style>
+  <link rel="stylesheet" href="estilo-calc.css">
+</head>
+<body>
+  <main>
+    <h1>Custos Automóvel</h1>
+
+    <div class="container" style="padding: 30pt; gap:10%">
+      <div class="inputs-container" style="display: grid;">
+        <input type="number" class="numbers" id="precoAutomovel" placeholder="Preço do Automóvel">
+        <input type="number" class="numbers" id="valorEntrada" placeholder="Valor pago de entrada">
+        <input type="number" class="numbers" id="quantidadeParcelas" placeholder="Quantidade de parcelas">
+        <input type="number" class="numbers" step="0.01" id="cet" placeholder="C.E.T. (ao mês)">
+        <div>
+          <input type="radio" id="price" name="financiamentoTipo" value="PRICE" checked>
+          <label for="price">PRICE</label>
+          <input type="radio" id="sac" name="financiamentoTipo" value="SAC">
+          <label for="sac">SAC</label>
+        </div>
+        <button id="calcular">Calcular</button>
+        <div id="outputs">
+          <output id="valorFinanciadoOutput"></output>
+          <label for="valorFinanciadoOutput">Valor Financiado</label>
+          <output id="valorParcela"></output>
+          <label for="valorParcela">Valor da Parcela</label>
+        </div>
+      </div>
+      <div class="tabela-container">
+        <table id="tabelaAmortizacao">
+          <thead>
+            <tr>
+              <th>Parcela</th>
+              <th>Valor da Parcela</th>
+              <th>Valor Juros</th>
+              <th>Valor Amortizado</th>
+              <th>Saldo Devedor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Linhas da tabela serão adicionadas aqui -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('calcular').addEventListener('click', function() {
+      const precoAutomovel = Number(document.getElementById('precoAutomovel').value);
+      const valorEntrada = Number(document.getElementById('valorEntrada').value);
+      const quantidadeParcelas = Number(document.getElementById('quantidadeParcelas').value);
+      const cet = Number(document.getElementById('cet').value) / 100;
+      const tipoFinanciamento = document.querySelector('input[name="financiamentoTipo"]:checked').value;
+    
+      // Calcula o valor financiado
+      const valorFinanciado = precoAutomovel - valorEntrada;
+      document.getElementById('valorFinanciadoOutput').value = `R$ ${valorFinanciado.toFixed(2)}`;
+    
+      // Limpando a tabela de amortização para nova consulta
+      const corpoTabela = document.getElementById('tabelaAmortizacao').getElementsByTagName('tbody')[0];
+      corpoTabela.innerHTML = '';
+    
+      // Cálculos específicos para cada tipo de financiamento
+      if (tipoFinanciamento === 'PRICE') {
+        calcularFinanciamentoPRICE(valorFinanciado, cet, quantidadeParcelas);
+      } else if (tipoFinanciamento === 'SAC') {
+        calcularFinanciamentoSAC(valorFinanciado, cet, quantidadeParcelas);
+      }
+    });
+    
+    function formatarValor(valor) {
+      return valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    
+    function calcularFinanciamentoPRICE(valorFinanciado, cet, quantidadeParcelas) {
+      const i = cet;
+      let totalJuros = 0;
+      const n = quantidadeParcelas;
+      
+      const valorParcela = valorFinanciado * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
+      
+      let saldoDevedor = valorFinanciado;
+      const corpoTabela = document.getElementById('tabelaAmortizacao').getElementsByTagName('tbody')[0];
+      
+      for (let parcela = 1; parcela <= n; parcela++) {
+        const jurosParcela = saldoDevedor * i;
+        totalJuros += jurosParcela;
+        const amortizacao = valorParcela - jurosParcela;
+        saldoDevedor -= amortizacao;
+        
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${parcela}</td><td>${formatarValor(valorParcela)}</td><td>${formatarValor(jurosParcela)}</td><td>${formatarValor(amortizacao)}</td><td>${formatarValor(saldoDevedor)}</td>`;
+        corpoTabela.appendChild(tr);
+      }
+      
+      // Adicionando a linha final com os totais em negrito
+      const trTotal = document.createElement('tr');
+      trTotal.innerHTML = `<td>Total</td><td></td><td style="font-weight: bold;">${formatarValor(totalJuros)}</td><td style="font-weight: bold;">${formatarValor(valorFinanciado - saldoDevedor)}</td><td></td>`;
+      corpoTabela.appendChild(trTotal);
+    }
+    
+    
+    function calcularFinanciamentoSAC(valorFinanciado, cet, quantidadeParcelas) {
+      const i = cet;
+      let totalJuros = 0;
+      const amortizacao = valorFinanciado / quantidadeParcelas;
+      
+      let saldoDevedor = valorFinanciado;
+      const corpoTabela = document.getElementById('tabelaAmortizacao').getElementsByTagName('tbody')[0];
+      
+      for (let parcela = 1; parcela <= quantidadeParcelas; parcela++) {
+        const jurosParcela = saldoDevedor * i;
+        totalJuros += jurosParcela;
+        const valorParcela = amortizacao + jurosParcela;
+        saldoDevedor -= amortizacao;
+        
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${parcela}</td><td>${formatarValor(valorParcela)}</td><td>${formatarValor(jurosParcela)}</td><td>${formatarValor(amortizacao)}</td><td>${formatarValor(saldoDevedor)}</td>`;
+        corpoTabela.appendChild(tr);
+      }
+      
+      // Adicionando a linha final com os totais em negrito
+      const trTotal = document.createElement('tr');
+      trTotal.innerHTML = `<td>Total</td><td></td><td style="font-weight: bold;">${formatarValor(totalJuros)}</td><td style="font-weight: bold;">${formatarValor(valorFinanciado)}</td><td></td>`;
+      corpoTabela.appendChild(trTotal);
+    }
+    
+    
+    
+  </script>
+</body>
 </html>
