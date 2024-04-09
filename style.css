@@ -4,7 +4,7 @@
 :root {
   --maincolor: rgb(76, 105, 86);
   --bgcolor: #ebecf0;
-  --tomaincolor: brightness(130%) saturate(30%) hue-rotate(-39deg)
+  --tomaincolor: brightness(130%) saturate(30%) hue-rotate(-39deg);
 }
 
 * {
@@ -23,7 +23,7 @@ body {
 
 main {
   display: flex;
-  background-color:var(--bgcolor);
+  background-color: var(--bgcolor);
   border-radius: 16px;
   padding: 200px 200px;
   justify-content: center;
@@ -112,6 +112,7 @@ h2 {
   }
 }
 
+
 .icon {
   width: 60px;
   filter: brightness(130%) saturate(30%) hue-rotate(-39deg);
@@ -133,15 +134,13 @@ h2 {
 }
 
 @media only screen and (max-width: 1930px) {
-.calculadora{
-  margin-top: 60px;
-}
-
+  .calculadora {
+    margin-top: 60px;
+  }
 }
 
 @media only screen and (max-width: 900px) {
-
-  main{
+  main {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -156,19 +155,18 @@ h2 {
     border-bottom: solid 5px --maincolor;
   }
 
-  h1{
+  h1 {
     font-size: 24pt;
     line-height: 0.7em;
   }
 
-  h2{
+  h2 {
     font-size: 14pt;
   }
 
-
   /* Mudando o layout dos botões para duas colunas */
   .botoes {
-    margin:auto;
+    margin: auto;
     padding-top: 25px;
     display: flex;
     flex-wrap: wrap;
@@ -181,14 +179,13 @@ h2 {
   .botoes > a > button {
     min-width: 350px;
     width: 75%;
-    margin:auto;
+    margin: auto;
     font-size: 14pt;
     margin-bottom: 10px;
 
-  .icon {
-    width: 9%;
-  }
-
+    .icon {
+      width: 9%;
+    }
   }
 
   .botoes > a > button:focus {

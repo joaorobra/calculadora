@@ -82,6 +82,72 @@ output {
     inset 2px 2px 8px -1px rgba(72, 79, 96, 0.5);
 }
 
+.container {
+  display: flex;
+  justify-content: space-between;
+  /* Alinha os filhos espaçando igualmente entre eles */
+  align-items: start;
+  /* Alinha os itens ao início, mantendo-os alinhados no topo */
+}
+
+.inputs-container {
+  display: grid;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+}
+/* Estilo adicional para garantir que a tabela não fique muito apertada */
+.tabela-container {
+  padding: 10px;
+  background: #dde1e7;
+  height: auto;
+  box-shadow: inset -5px -5px 9px rgba(255, 255, 255, 0.45),
+    inset 5px 5px 9px rgba(94, 104, 121, 0.3);
+  border-radius: 10px;
+}
+/* Adiciona um pouco de espaço à esquerda da tabela */
+.separador {
+  background-color: rgb(128, 128, 128);
+  width: 1px;
+  height: 450px;
+  padding: auto;
+}
+.container-financiamento {
+  display: flex;
+  justify-content: space-between;
+  /* Alinha os filhos espaçando igualmente entre eles */
+  align-items: start;
+  /* Alinha os itens ao início, mantendo-os alinhados no topo */
+  padding: 30pt;
+  gap: 3%;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: monospace;
+  table-layout: auto; /* Assegura ajuste automático das colunas */
+}
+
+th,
+td {
+  text-align: center;
+  padding: 8px;
+  border: 1px solid #ddd; /* Bordas cinza claro */
+  background-color: #f1f1f1;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+/* Adiciona bordas às células da tabela */
+td {
+  border-right: 1px solid #f1f1f1;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+
 button#calcular {
   height: 30pt;
   font-family: "Roboto";

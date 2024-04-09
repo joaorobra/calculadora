@@ -1,83 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Custos Automóvel</title>
-  <style>
-    .container {
-      display: flex;
-      justify-content: space-between;
-      /* Alinha os filhos espaçando igualmente entre eles */
-      align-items: start;
-      /* Alinha os itens ao início, mantendo-os alinhados no topo */
-    }
-  
-    .inputs-container,
-    .tabela-container {
-      flex: 1;
-      /* Faz com que ambos os contêineres ocupem espaço igual no contêiner pai, mas você pode ajustar conforme necessário */
-    }
-  
-    .inputs-container {
-      justify-items: center;
-      padding-right: 2px;
-    }
-    /* Estilo adicional para garantir que a tabela não fique muito apertada */
-    .tabela-container {
-      padding: 10px;
-      background: #dde1e7;
-      height: auto;
-      box-shadow: inset -5px -5px 9px rgba(255, 255, 255, 0.45),
-        inset 5px 5px 9px rgba(94, 104, 121, 0.3);
-      border-radius: 10px;
-    }
-      /* Adiciona um pouco de espaço à esquerda da tabela */
-    .separador{
-      background-color: rgb(128, 128, 128);
-      width: 1px;
-      height: 450px;
-      padding: auto;
-    }
-
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      font-family: monospace;
-      table-layout: auto; /* Assegura ajuste automático das colunas */
-    }
-
-    th, td {
-      text-align: center;
-      padding: 8px;
-      border: 1px solid #ddd; /* Bordas cinza claro */
-      background-color: #f1f1f1;
-    }
-
-    th {
-      background-color: #f2f2f2;
-    }
-
-    /* Adiciona bordas às células da tabela */
-    td {
-      border-right: 1px solid #f1f1f1;
-      border-bottom: 1px solid #f1f1f1;
-    }
-
-    /* Estilo para os números (não é possível fazer separação de milhar somente com CSS) */
-    .number {
-      text-align: right;
-    }
-
-  </style>
-  <link rel="stylesheet" href="estilo-calc.css">
+  <link rel="stylesheet" href="estilo-calc.css" />
 </head>
+
 <body>
   <main>
     <h1>Custos Automóvel</h1>
 
-    <div class="container" style="padding: 30pt; gap:3%">
-      <div class="inputs-container" style="display: grid;">
+    <div class="container-financiamento">
+      <div class="inputs-container">
         <input type="number" class="numbers" id="precoAutomovel" placeholder="Preço do Automóvel">
         <input type="number" class="numbers" id="valorEntrada" placeholder="Valor pago de entrada">
         <input type="number" class="numbers" id="quantidadeParcelas" placeholder="Quantidade de parcelas">
@@ -92,11 +28,13 @@
         <div id="outputs">
           <output id="valorFinanciadoOutput"></output>
           <label for="valorFinanciadoOutput">Valor Financiado</label>
-          <output id="valorParcela"></output>
-          <label for="valorParcela">Valor da Parcela</label>
+          <output id="TotalEmJuros"></output>
+          <label for="TotalEmJuros">Total pago em Juros</label>
+          <output id="TotalPago"></output>
+          <label for="TotalPago">Total pago</label>
         </div>
       </div>
-        <div class="separador"></div>
+      <div class="separador"></div>
       <div class="tabela-container">
         <table id="tabelaAmortizacao">
           <thead>
@@ -117,21 +55,22 @@
   </main>
 
   <script>
-    document.getElementById('calcular').addEventListener('click', function() {
+    document.getElementById('calcular').addEventListener('click', function () {
       const precoAutomovel = Number(document.getElementById('precoAutomovel').value);
       const valorEntrada = Number(document.getElementById('valorEntrada').value);
       const quantidadeParcelas = Number(document.getElementById('quantidadeParcelas').value);
       const cet = Number(document.getElementById('cet').value) / 100;
       const tipoFinanciamento = document.querySelector('input[name="financiamentoTipo"]:checked').value;
-    
+
       // Calcula o valor financiado
       const valorFinanciado = precoAutomovel - valorEntrada;
-      document.getElementById('valorFinanciadoOutput').value = `R$ ${valorFinanciado.toFixed(2)}`;
-    
+      document.getElementById('valorFinanciadoOutput').value = `${valorFinanciado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+
       // Limpando a tabela de amortização para nova consulta
       const corpoTabela = document.getElementById('tabelaAmortizacao').getElementsByTagName('tbody')[0];
       corpoTabela.innerHTML = '';
-    
+
       // Cálculos específicos para cada tipo de financiamento
       if (tipoFinanciamento === 'PRICE') {
         calcularFinanciamentoPRICE(valorFinanciado, cet, quantidadeParcelas);
@@ -139,66 +78,70 @@
         calcularFinanciamentoSAC(valorFinanciado, cet, quantidadeParcelas);
       }
     });
-    
+
     function formatarValor(valor) {
       return valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
-    
+
     function calcularFinanciamentoPRICE(valorFinanciado, cet, quantidadeParcelas) {
       const i = cet;
       let totalJuros = 0;
       const n = quantidadeParcelas;
-      
       const valorParcela = valorFinanciado * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
-      
       let saldoDevedor = valorFinanciado;
       const corpoTabela = document.getElementById('tabelaAmortizacao').getElementsByTagName('tbody')[0];
-      
+      let totalPago = 0;
+    
       for (let parcela = 1; parcela <= n; parcela++) {
         const jurosParcela = saldoDevedor * i;
         totalJuros += jurosParcela;
         const amortizacao = valorParcela - jurosParcela;
         saldoDevedor -= amortizacao;
-        
+        totalPago += valorParcela;
+    
         const tr = document.createElement('tr');
         tr.innerHTML = `<td>${parcela}</td><td>${formatarValor(valorParcela)}</td><td>${formatarValor(jurosParcela)}</td><td>${formatarValor(amortizacao)}</td><td>${formatarValor(saldoDevedor)}</td>`;
         corpoTabela.appendChild(tr);
       }
-      
-      // Adicionando a linha final com os totais em negrito
+
+            // Adicionando a linha final com os totais em negrito
       const trTotal = document.createElement('tr');
-      trTotal.innerHTML = `<td>Total</td><td></td><td style="font-weight: bold;">${formatarValor(totalJuros)}</td><td style="font-weight: bold;">${formatarValor(valorFinanciado - saldoDevedor)}</td><td></td>`;
+      trTotal.innerHTML = `<td>Total</td><td></td><td style="font-weight: bold;">${formatarValor(totalJuros)}</td><td style="font-weight: bold;">${formatarValor(valorFinanciado)}</td><td></td>`;
       corpoTabela.appendChild(trTotal);
+    
+      // Atualiza os campos TotalEmJuros e TotalPago com os valores calculado
+      document.getElementById('TotalEmJuros').value = formatarValor(totalJuros);
+      document.getElementById('TotalPago').value = formatarValor(totalPago);
     }
-    
-    
+
     function calcularFinanciamentoSAC(valorFinanciado, cet, quantidadeParcelas) {
       const i = cet;
       let totalJuros = 0;
       const amortizacao = valorFinanciado / quantidadeParcelas;
-      
+
       let saldoDevedor = valorFinanciado;
       const corpoTabela = document.getElementById('tabelaAmortizacao').getElementsByTagName('tbody')[0];
-      
+
       for (let parcela = 1; parcela <= quantidadeParcelas; parcela++) {
         const jurosParcela = saldoDevedor * i;
         totalJuros += jurosParcela;
         const valorParcela = amortizacao + jurosParcela;
         saldoDevedor -= amortizacao;
-        
+
         const tr = document.createElement('tr');
         tr.innerHTML = `<td>${parcela}</td><td>${formatarValor(valorParcela)}</td><td>${formatarValor(jurosParcela)}</td><td>${formatarValor(amortizacao)}</td><td>${formatarValor(saldoDevedor)}</td>`;
         corpoTabela.appendChild(tr);
       }
-      
+
       // Adicionando a linha final com os totais em negrito
       const trTotal = document.createElement('tr');
       trTotal.innerHTML = `<td>Total</td><td></td><td style="font-weight: bold;">${formatarValor(totalJuros)}</td><td style="font-weight: bold;">${formatarValor(valorFinanciado)}</td><td></td>`;
       corpoTabela.appendChild(trTotal);
     }
-    
-    
-    
+
+
+
   </script>
 </body>
+
 </html>
