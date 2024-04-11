@@ -110,6 +110,25 @@ h2 {
       100
     ); /* isso vai girar a tonalidade das imagens em 180 graus */
   }
+
+  span {
+    width: 60px;
+    filter: brightness(
+      100
+    ); /* isso vai girar a tonalidade das imagens em 180 graus */
+  }
+}
+
+
+span.material-symbols-outlined {
+  color: #4d715c;
+  font-family: 'Material Symbols Outlined';
+  font-size: 60px;
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
 }
 
 
