@@ -118,6 +118,9 @@
       const i = cet;
       let totalJuros = 0;
       const amortizacao = valorFinanciado / quantidadeParcelas;
+      let totalPago = 0;
+
+
 
       let saldoDevedor = valorFinanciado;
       const corpoTabela = document.getElementById('tabelaAmortizacao').getElementsByTagName('tbody')[0];
@@ -127,6 +130,7 @@
         totalJuros += jurosParcela;
         const valorParcela = amortizacao + jurosParcela;
         saldoDevedor -= amortizacao;
+        totalPago += valorParcela;
 
         const tr = document.createElement('tr');
         tr.innerHTML = `<td>${parcela}</td><td>${formatarValor(valorParcela)}</td><td>${formatarValor(jurosParcela)}</td><td>${formatarValor(amortizacao)}</td><td>${formatarValor(saldoDevedor)}</td>`;
@@ -137,6 +141,10 @@
       const trTotal = document.createElement('tr');
       trTotal.innerHTML = `<td>Total</td><td></td><td style="font-weight: bold;">${formatarValor(totalJuros)}</td><td style="font-weight: bold;">${formatarValor(valorFinanciado)}</td><td></td>`;
       corpoTabela.appendChild(trTotal);
+
+      // Atualiza os campos TotalEmJuros e TotalPago com os valores calculado
+      document.getElementById('TotalEmJuros').value = formatarValor(totalJuros);
+      document.getElementById('TotalPago').value = formatarValor(totalPago);
     }
 
 
