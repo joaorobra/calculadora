@@ -4,17 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Custos Automóvel</title>
+  <title>SAC ou Price</title>
   <link rel="stylesheet" href="estilo-calc.css" />
 </head>
 
 <body>
   <main>
-    <h1>Custos Automóvel</h1>
+    <h1>SAC ou PRICE</h1>
 
     <div class="container-financiamento">
       <div class="inputs-container">
-        <input type="number" class="numbers" id="precoAutomovel" placeholder="Preço do Automóvel">
+        <input type="number" class="numbers" id="precoAutomovel" placeholder="Valor total do bem">
         <input type="number" class="numbers" id="valorEntrada" placeholder="Valor pago de entrada">
         <input type="number" class="numbers" id="quantidadeParcelas" placeholder="Quantidade de parcelas">
         <input type="number" class="numbers" step="0.01" id="cet" placeholder="C.E.T. (ao mês)">
@@ -91,24 +91,24 @@
       let saldoDevedor = valorFinanciado;
       const corpoTabela = document.getElementById('tabelaAmortizacao').getElementsByTagName('tbody')[0];
       let totalPago = 0;
-    
+
       for (let parcela = 1; parcela <= n; parcela++) {
         const jurosParcela = saldoDevedor * i;
         totalJuros += jurosParcela;
         const amortizacao = valorParcela - jurosParcela;
         saldoDevedor -= amortizacao;
         totalPago += valorParcela;
-    
+
         const tr = document.createElement('tr');
         tr.innerHTML = `<td>${parcela}</td><td>${formatarValor(valorParcela)}</td><td>${formatarValor(jurosParcela)}</td><td>${formatarValor(amortizacao)}</td><td>${formatarValor(saldoDevedor)}</td>`;
         corpoTabela.appendChild(tr);
       }
 
-            // Adicionando a linha final com os totais em negrito
+      // Adicionando a linha final com os totais em negrito
       const trTotal = document.createElement('tr');
       trTotal.innerHTML = `<td>Total</td><td></td><td style="font-weight: bold;">${formatarValor(totalJuros)}</td><td style="font-weight: bold;">${formatarValor(valorFinanciado)}</td><td></td>`;
       corpoTabela.appendChild(trTotal);
-    
+
       // Atualiza os campos TotalEmJuros e TotalPago com os valores calculado
       document.getElementById('TotalEmJuros').value = formatarValor(totalJuros);
       document.getElementById('TotalPago').value = formatarValor(totalPago);

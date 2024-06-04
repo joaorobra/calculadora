@@ -29,7 +29,9 @@
 
         <button id="calcular">Calcular</button>
 
-        <output style= "font-size: 12pt" "diferenca-presente" id="idiferecapresente"></output>
+        <output style="font-size: 12pt" id="idiferecapresente"></output>
+        <output style="font-size: 12pt" id="irendimento"></output>
+        <output style="font-size: 12pt" id="ivalormaispago"></output>
 
         <p id="mensagem-economia"></p>
 
@@ -44,8 +46,28 @@
                     valorTotalParcelado += valorParcela;
                 }
 
-                var economia = valorAVista - valorTotalParcelado + saldoRemanescente; // Correção aqui
+                var economia = saldoRemanescente; // Correção aqui
                 return economia; // Retorna apenas a economia
+            }
+
+            function calcularRendimento(valorAVista, qtdParcelas, valorParcela, taxaRetorno) {
+                var saldoRemanescente = valorAVista;
+                var rendimento = 0;
+
+                for (var i = 0; i < qtdParcelas; i++) {
+                    rendimento += saldoRemanescente * (taxaRetorno / 100);
+                    saldoRemanescente *= (1 + taxaRetorno / 100);
+                    saldoRemanescente -= valorParcela;
+                }
+
+                return rendimento;
+            }
+
+
+            function calcularValorMaisPago(qtdParcelas, valorParcela, valorAVista) {
+                var valorTotalParcelado = qtdParcelas * valorParcela;
+                var valorMaisPago = valorTotalParcelado - valorAVista;
+                return valorMaisPago;
             }
 
             var calcular = document.getElementById("calcular");
@@ -54,6 +76,8 @@
             var ivalorparcela = document.getElementById("ivalorparcela");
             var itaxaretorno = document.getElementById("itaxaretorno");
             var difereCapresente = document.getElementById("idiferecapresente");
+            var irendimento = document.getElementById("irendimento");
+            var ivalormaispago = document.getElementById("ivalormaispago");
 
             calcular.addEventListener("click", function () {
                 var valorAVista = parseFloat(ivaloravista.value);
@@ -62,6 +86,8 @@
                 var taxaRetorno = parseFloat(itaxaretorno.value);
 
                 var economia = calcularEconomia(valorAVista, qtdParcelas, valorParcela, taxaRetorno);
+                var rendimento = calcularRendimento(valorAVista, qtdParcelas, valorParcela, taxaRetorno);
+                var valorMaisPago = calcularValorMaisPago(qtdParcelas, valorParcela, valorAVista);
 
                 var economiaFormatada = Intl.NumberFormat("pt-BR", {
                     style: "currency",
@@ -73,7 +99,19 @@
                     currency: "BRL",
                 }).format(-economia);
 
+                var rendimentoFormatado = Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                }).format(rendimento);
+
+                var valorMaisPagoFormatado = Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                }).format(valorMaisPago);
+
                 document.querySelector("output#idiferecapresente").textContent = `Economia pagando ${economia < 0 ? 'À VISTA' : 'A PRAZO'} de ${economia < 0 ? NegeconomiaFormatada : economiaFormatada}.`;
+                document.querySelector("output#irendimento").textContent = `Rendimento do valor investido a prazo: ${rendimentoFormatado}.`;
+                document.querySelector("output#ivalormaispago").textContent = `Valor total pago a mais no parcelamento: ${valorMaisPagoFormatado}.`;
             });
         </script>
 
