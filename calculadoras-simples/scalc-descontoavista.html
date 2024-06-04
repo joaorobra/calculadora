@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calcular Desconto</title>
+    <link rel="stylesheet" href="estilo-calc.css" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+
+<body>
+    <main>
+        <span id="iconbig" class="material-symbols-outlined"> mintmark </span>
+        <h1>Calcular Desconto</h1>
+
+        <input class="numbers" type="number" name="valor-a-vista" id="ivaloravista" placeholder="Valor à vista"
+            min="0" />
+
+        <input class="numbers" type="number" name="qtd-parcelas" id="iqtdparcelas" placeholder="Quantidade de parcelas"
+            min="1" />
+
+        <input class="numbers" type="number" name="valor-parcela" id="ivalorparcela" placeholder="Valor da parcela"
+            min="0" />
+
+        <input class="numbers" type="number" name="taxa-retorno" id="itaxaretorno"
+            placeholder="Taxa de retorno ao mês (%)" min="0" />
+
+        <button id="calcular">Calcular</button>
+
+        <output style= "font-size: 12pt" "diferenca-presente" id="idiferecapresente"></output>
+
+        <p id="mensagem-economia"></p>
+
+        <script>
+            function calcularEconomia(valorAVista, qtdParcelas, valorParcela, taxaRetorno) {
+                var saldoRemanescente = valorAVista;
+                var valorTotalParcelado = 0;
+
+                for (var i = 0; i < qtdParcelas; i++) {
+                    saldoRemanescente *= (1 + taxaRetorno / 100);
+                    saldoRemanescente -= valorParcela;
+                    valorTotalParcelado += valorParcela;
+                }
+
+                var economia = valorAVista - valorTotalParcelado + saldoRemanescente; // Correção aqui
+                return economia; // Retorna apenas a economia
+            }
+
+            var calcular = document.getElementById("calcular");
+            var ivaloravista = document.getElementById("ivaloravista");
+            var iqtdparcelas = document.getElementById("iqtdparcelas");
+            var ivalorparcela = document.getElementById("ivalorparcela");
+            var itaxaretorno = document.getElementById("itaxaretorno");
+            var difereCapresente = document.getElementById("idiferecapresente");
+
+            calcular.addEventListener("click", function () {
+                var valorAVista = parseFloat(ivaloravista.value);
+                var qtdParcelas = parseFloat(iqtdparcelas.value);
+                var valorParcela = parseFloat(ivalorparcela.value);
+                var taxaRetorno = parseFloat(itaxaretorno.value);
+
+                var economia = calcularEconomia(valorAVista, qtdParcelas, valorParcela, taxaRetorno);
+
+                var economiaFormatada = Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                }).format(economia);
+
+                var NegeconomiaFormatada = Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                }).format(-economia);
+
+                document.querySelector("output#idiferecapresente").textContent = `Economia pagando ${economia < 0 ? 'À VISTA' : 'A PRAZO'} de ${economia < 0 ? NegeconomiaFormatada : economiaFormatada}.`;
+            });
+        </script>
+
+    </main>
+</body>
+
+</html>

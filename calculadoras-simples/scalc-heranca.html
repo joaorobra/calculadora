@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculadora de Herança</title>
+    <link rel="stylesheet" href="estilo-calc.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <main>
+        <h1>Calculadora de Herança</h1>
+
+        <label for="bensProprios">Valor dos Bens Próprios:</label>
+        <input class="numbers" type="number" id="bensProprios" placeholder="Bens próprios" min="0" />
+
+        <label for="bensComuns">Valor dos Bens Comuns:</label>
+        <input class="numbers" type="number" id="bensComuns" placeholder="Bens comuns" min="0" />
+
+        <label for="filhos">Número de Filhos:</label>
+        <input class="numbers" type="number" id="filhos" placeholder="Número de filhos" min="0" />
+
+        <label for="conjuge">Cônjuge Vivo (Sim ou Não):</label>
+        <select id="conjuge">
+            <option value="sim">Sim</option>
+            <option value="nao">Não</option>
+        </select>
+
+        <label for="pais">Pais Vivos (Sim ou Não):</label>
+        <select id="pais">
+            <option value="sim">Sim</option>
+            <option value="nao">Não</option>
+        </select>
+
+        <button id="calcular">Calcular</button>
+
+        <div id="resultadoHeranca"></div>
+
+        <canvas id="graficoProprios"></canvas>
+        <canvas id="graficoComuns"></canvas>
+
+        <script>
+            function calcularHeranca(bensProprios, bensComuns, filhos, conjuge, pais) {
+                var meacaoValor = bensComuns / 2;
+                var herancaTotal = bensProprios + meacaoValor;
+
+                var totalHerdeiros = filhos;
+
+                if (conjuge === "sim") {
+                    totalHerdeiros += 1;
+                } else if (filhos === 0 && pais === "sim") {
+                    totalHerdeiros += 2;
+                }
+
+                var quotaDisponivel = herancaTotal * 0.5;
+                var quotaLegitima = herancaTotal - quotaDisponivel;
+                var valorPorHerdeiro = quotaLegitima / totalHerdeiros;
+
+                var herancaFilhos = valorPorHerdeiro * filhos;
+                var herancaConjuge = conjuge === "sim" ? valorPorHerdeiro : 0;
+                var herancaPais = filhos === 0 && pais === "sim" ? valorPorHerdeiro : 0;
+
+                return {
+                    meacaoValor: meacaoValor,
+                    quotaDisponivel: quotaDisponivel,
+                    quotaLegitima: quotaLegitima,
+                    valorPorHerdeiro: valorPorHerdeiro,
+                    herancaFilhos: herancaFilhos,
+                    herancaConjuge: herancaConjuge,
+                    herancaPais: herancaPais
+                };
+            }
+
+            function desenharGrafico(id, labels, data, title) {
+                var ctx = document.getElementById(id).getContext('2d');
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: title
+                            }
+                        }
+                    }
+                });
+            }
+
+            var calcular = document.getElementById("calcular");
+            var bensProprios = document.getElementById("bensProprios");
+            var bensComuns = document.getElementById("bensComuns");
+            var filhos = document.getElementById("filhos");
+            var conjuge = document.getElementById("conjuge");
+            var pais = document.getElementById("pais");
+            var resultadoHeranca = document.getElementById("resultadoHeranca");
+
+            calcular.addEventListener("click", function () {
+                var bensPropriosNum = parseFloat(bensProprios.value);
+                var bensComunsNum = parseFloat(bensComuns.value);
+                var filhosNum = parseFloat(filhos.value);
+                var conjugeVal = conjuge.value;
+                var paisVal = pais.value;
+
+                var resultado = calcularHeranca(
+                    bensPropriosNum,
+                    bensComunsNum,
+                    filhosNum,
+                    conjugeVal,
+                    paisVal
+                );
+
+                var resultadoTexto = `
+                    <p>Valor da Meação: ${Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(resultado.meacaoValor)}</p>
+                    <p>Valor da Quota Disponível: ${Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(resultado.quotaDisponivel)}</p>
+                    <p>Valor da Quota Legítima: ${Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(resultado.quotaLegitima)}</p>
+                    <p>Valor por Herdeiro: ${Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(resultado.valorPorHerdeiro)}</p>
+                    <p>Herança para Filhos: ${Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(resultado.herancaFilhos)}</p>
+                    <p>Herança para Cônjuge: ${Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(resultado.herancaConjuge)}</p>
+                    <p>Herança para Pais: ${Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(resultado.herancaPais)}</p>
+                `;
+
+                resultadoHeranca.innerHTML = resultadoTexto;
+
+                desenharGrafico('graficoProprios', ['Filhos', 'Cônjuge', 'Pais'], [resultado.herancaFilhos, resultado.herancaConjuge, resultado.herancaPais], 'Bens Próprios');
+                desenharGrafico('graficoComuns', ['Meação', 'Filhos', 'Cônjuge', 'Pais'], [resultado.meacaoValor, resultado.herancaFilhos, resultado.herancaConjuge, resultado.herancaPais], 'Bens Comuns');
+            });
+        </script>
+    </main>
+</body>
+
+</html>

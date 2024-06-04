@@ -120,6 +120,7 @@ h2 {
 }
 
 
+
 span.material-symbols-outlined {
   color: #4d715c;
   font-family: 'Material Symbols Outlined';
@@ -136,6 +137,8 @@ span.material-symbols-outlined {
   width: 60px;
   filter: brightness(130%) saturate(30%) hue-rotate(-39deg);
 }
+
+
 
 .calculadora {
   margin-left: 50px;
