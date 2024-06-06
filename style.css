@@ -171,7 +171,7 @@ span.material-symbols-outlined {
   /* Reduzindo a largura do menu */
   .boas-vindas {
     width: 80%;
-    margin: 50% auto auto auto;
+    margin: 100vw 0 ;
     padding-left: 15px;
     padding-right: 15px;
     border-bottom: solid 5px --maincolor;
@@ -199,11 +199,13 @@ span.material-symbols-outlined {
 
   /* Reduzindo o tamanho dos botões */
   .botoes > a > button {
-    min-width: 350px;
-    width: 75%;
+    min-width: 75vw;
+    width: 85vw;
+    height: 24vw;
+    max-height: 24vw;
     margin: auto;
-    font-size: 14pt;
-    margin-bottom: 10px;
+    font-size: 18pt;
+    margin-bottom: 16px;
 
     .icon {
       width: 9%;

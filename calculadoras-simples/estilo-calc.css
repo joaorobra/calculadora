@@ -182,34 +182,47 @@ label {
 }
 
 
-@media (max-width: 600px) {
+/* Smartphone-Specific Styling */
+@media (max-width: 600px) {  /* Adjust this breakpoint as needed */
 
-    * {  background-color: #ebecf0;}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    body {
-        display: flex;
-        justify-content: center;
-    }
+h1 {
+  text-align: center;
+}
 
-  main {
-    margin-top: 40%;
-  }
+main {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
 
-  input.numbers {
-    width: 90%;
-    font-size: 15pt;
+}
+
+
+  input.numbers, output {
+    width: 96vw;            /* Full width for better readability */
+    font-size: 12pt;        /* Increase font size for touchscreens */
+    margin-bottom: 10px;    /* Add spacing between elements */
   }
 
   output {
-    width: 90%;
-    font-size: 15pt;
+    font-size: 12pt;
   }
 
   button#calcular {
-    width: 60%;
-    font-size: 15pt;
-    margin: 10 px;
+    width: 50%;             /* Larger button for easier tapping */
+    font-size: 12pt;
+    padding: 10px;         /* Add padding for a larger tap target */
   }
+
+  
 }
 
 
