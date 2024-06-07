@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparação de Investimentos</title>
+    <link rel="stylesheet" href="estilo-calc.css" />
+    <style>
+        .highlight {
+            color: #498d1b;
+            font-weight: bold;
+        }
+
+        input.numbers {
+            font-size: 12pt;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1>Comparação de Investimentos</h1>
+
+        <div class="container-financiamento" style="display: flex;flex-direction: column;padding: 20px;align-content: center;align-items: center;">
+            <div class="inputs-container">
+                <input type="number" class="numbers" id="valorAplicado" placeholder="Valor Aplicado">
+                <input type="number" class="numbers" id="rentabilidadeAtual" step="0.1"
+                    placeholder="Rentabilidade Atual Bruta (%)">
+                <div>
+                    <input type="radio" id="atualIsentoSim" name="atualIsento" value="sim">
+                    <label for="atualIsentoSim">Atual Isento</label>
+                    <input type="radio" id="atualIsentoNao" name="atualIsento" value="nao">
+                    <label for="atualIsentoNao">Atual Não Isento</label>
+                </div>
+                <input type="number" class="numbers" id="tempoAplicacaoAtual"
+                    placeholder="Tempo em Dias da Aplicação Atual">
+                <input type="number" class="numbers" id="novaRentabilidade" step="0.1"
+                    placeholder="Nova Rentabilidade Bruta (%)">
+                <div>
+                    <input type="radio" id="novoIsentoSim" name="novoIsento" value="sim">
+                    <label for="novoIsentoSim">Novo Isento</label>
+                    <input type="radio" id="novoIsentoNao" name="novoIsento" value="nao">
+                    <label for="novoIsentoNao">Novo Não Isento</label>
+                </div>
+                <button id="calcular">Calcular Troca</button>
+            </div>
+            <div class="tabela-container" style="margin-top: 16px; font-size: 14pt; align-self: center">
+                <table id="tabelaTroca" style="font-size: 12pt;">
+                    <thead>
+                        <tr>
+                            <th>Dias Aplicados</th>
+                            <th>Rent. Ac. (%)</th>
+                            <th>Rent. Ac. Nova (%)</th>
+                            <th>Diferença (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>180</td>
+                            <td id="rentabilidadeAtual180"></td>
+                            <td id="rentabilidadeNova180"></td>
+                            <td id="diferenca180"></td>
+                        </tr>
+                        <tr>
+                            <td>360</td>
+                            <td id="rentabilidadeAtual360"></td>
+                            <td id="rentabilidadeNova360"></td>
+                            <td id="diferenca360"></td>
+                        </tr>
+                        <tr>
+                            <td>540</td>
+                            <td id="rentabilidadeAtual540"></td>
+                            <td id="rentabilidadeNova540"></td>
+                            <td id="diferenca540"></td>
+                        </tr>
+                        <tr>
+                            <td>720</td>
+                            <td id="rentabilidadeAtual720"></td>
+                            <td id="rentabilidadeNova720"></td>
+                            <td id="diferenca720"></td>
+                        </tr>
+                        <tr>
+                            <td>900</td>
+                            <td id="rentabilidadeAtual900"></td>
+                            <td id="rentabilidadeNova900"></td>
+                            <td id="diferenca900"></td>
+                        </tr>
+                        <tr>
+                            <td>1080</td>
+                            <td id="rentabilidadeAtual1080"></td>
+                            <td id="rentabilidadeNova1080"></td>
+                            <td id="diferenca1080"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('calcular').addEventListener('click', function () {
+            const valorAplicado = parseFloat(document.getElementById('valorAplicado').value);
+            const rentabilidadeAtualBruta = parseFloat(document.getElementById('rentabilidadeAtual').value) / 100;
+            const rentabilidadeNovaBruta = parseFloat(document.getElementById('novaRentabilidade').value) / 100;
+            const atualIsento = document.querySelector('input[name="atualIsento"]:checked').value === 'sim';
+            const novoIsento = document.querySelector('input[name="novoIsento"]:checked').value === 'sim';
+            const tempoAplicacaoAtual = parseInt(document.getElementById('tempoAplicacaoAtual').value);
+
+            function calcularAliquotaIR(dias) {
+                if (dias <= 180) return 0.225;
+                if (dias <= 360) return 0.20;
+                if (dias <= 720) return 0.175;
+                return 0.15;
+            }
+
+            function calcularRentabilidadeLiquida(rentabilidadeBruta, isento, dias) {
+                if (isento) return rentabilidadeBruta;
+                const aliquotaIR = calcularAliquotaIR(dias);
+                return rentabilidadeBruta * (1 - aliquotaIR);
+            }
+
+            function calcularRentabilidadeAcumulada(valor, rentabilidade, dias) {
+                return valor * Math.pow(1 + rentabilidade, dias / 365);
+            }
+
+            function atualizarTabela(diasDepoisDaTroca) {
+                const diasTotalAtual = tempoAplicacaoAtual + diasDepoisDaTroca;
+
+                const rentabilidadeAtualLiquida = calcularRentabilidadeLiquida(rentabilidadeAtualBruta, atualIsento, diasTotalAtual);
+                const rentabilidadeNovaLiquida = calcularRentabilidadeLiquida(rentabilidadeNovaBruta, novoIsento, diasDepoisDaTroca);
+
+                const valorFinalAtual = calcularRentabilidadeAcumulada(valorAplicado, rentabilidadeAtualLiquida, diasDepoisDaTroca);
+                const valorFinalNovo = calcularRentabilidadeAcumulada(valorAplicado, rentabilidadeNovaLiquida, diasDepoisDaTroca);
+
+                const rentabilidadeAtualAcumulada = ((valorFinalAtual / valorAplicado) - 1) * 100;
+                const rentabilidadeNovaAcumulada = ((valorFinalNovo / valorAplicado) - 1) * 100;
+
+                const diferenca = rentabilidadeNovaAcumulada - rentabilidadeAtualAcumulada;
+
+                document.getElementById(`rentabilidadeAtual${diasDepoisDaTroca}`).textContent = rentabilidadeAtualAcumulada.toFixed(2);
+                document.getElementById(`rentabilidadeNova${diasDepoisDaTroca}`).textContent = rentabilidadeNovaAcumulada.toFixed(2);
+                document.getElementById(`diferenca${diasDepoisDaTroca}`).textContent = diferenca.toFixed(2);
+            }
+
+            [180, 360, 540, 720, 900, 1080].forEach(atualizarTabela);
+
+            const diferencaCells = document.querySelectorAll('[id^=diferenca]');
+            let maiorDiferenca = -Infinity;
+            let celulaMaiorDiferenca = null;
+
+            diferencaCells.forEach(cell => {
+                const valorDiferenca = parseFloat(cell.textContent);
+                if (valorDiferenca > maiorDiferenca) {
+                    maiorDiferenca = valorDiferenca;
+                    celulaMaiorDiferenca = cell;
+                }
+            });
+
+            diferencaCells.forEach(cell => cell.classList.remove('highlight'));
+
+            if (celulaMaiorDiferenca) {
+                celulaMaiorDiferenca.classList.add('highlight');
+            }
+        });
+    </script>
+</body>
+
+</html>
