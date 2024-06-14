@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparação de Rentabilidade</title>
+    <link rel="stylesheet" href="estilo-calc.css" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    </head>
+    <style>
+        .highlight {
+            color: #498d1b;
+            /* Cor do texto */
+            font-weight: bold;
+            /* Negrito para o texto */
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <span id="iconbig" class="material-symbols-outlined"> search_insights </span>
+        <h1>Comparação de Rentabilidade</h1>
+
+        <div class="container-financiamento" style="display: flex; flex-direction: column; padding: 20px">
+            <div class="inputs-container">
+                <input type="number" class="numbers" id="rentabilidadeTotal" step="0.1"
+                    placeholder="Rentabilidade Total (%)">
+                <input type="number" class="numbers" id="periodo" placeholder="Período">
+                <div>
+                    <input type="radio" id="meses" name="periodoTipo" value="meses" checked>
+                    <label for="meses">Meses</label>
+                    <input type="radio" id="dias" name="periodoTipo" value="dias">
+                    <label for="dias">Dias</label>
+                </div>
+                <button id="calcular">Calcular Taxas</button>
+            </div>
+            <div id="outputs">
+                <output id="retornoAnualOutput"></output>
+                <label for="retornoAnualOutput">Retorno Anual (%)</label>
+                <output id="retornoMensalOutput"></output>
+                <label for="retornoMensalOutput">Retorno Mensal (%)</label>
+            </div>
+            <!-- Resto do código -->
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('calcular').addEventListener('click', function () {
+            const rentabilidadeTotal = Number(document.getElementById('rentabilidadeTotal').value) / 100;
+            const periodo = Number(document.getElementById('periodo').value);
+            const periodoTipo = document.querySelector('input[name="periodoTipo"]:checked').value;
+
+            let periodoAnual = periodoTipo === 'dias' ? periodo / 365 : periodo / 12;
+            let retornoAnual = (Math.pow((1 + rentabilidadeTotal), (1 / periodoAnual)) - 1) * 100;
+            let retornoMensal = (Math.pow((1 + rentabilidadeTotal), (1 / (periodoAnual * 12))) - 1) * 100;
+
+            document.getElementById('retornoAnualOutput').textContent = retornoAnual.toFixed(2);
+            document.getElementById('retornoMensalOutput').textContent = retornoMensal.toFixed(2);
+        });
+    </script>
+</body>
+
+</html>
