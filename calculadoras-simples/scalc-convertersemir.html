@@ -90,8 +90,8 @@
 
             const rentabilidadeComparada = rentabilidadeIsenta / (1 - aliquota) * 100;
 
-            document.getElementById('rentabilidadeComparadaOutput').value = rentabilidadeComparada.toFixed(2);
-            document.getElementById('aliquotaPeriodoOutput').value = (aliquota * 100).toFixed(2);
+            document.getElementById('rentabilidadeComparadaOutput').textContent = rentabilidadeComparada.toFixed(2);
+            document.getElementById('aliquotaPeriodoOutput').textContent = (aliquota * 100).toFixed(2);
 
             // Função para calcular a rentabilidade comparada e aplicar a classe de destaque
             function atualizarRentabilidade(linhaId, celulaId, aliquota) {
