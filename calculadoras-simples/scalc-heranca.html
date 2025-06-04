@@ -42,6 +42,14 @@
         <canvas id="graficoComuns"></canvas>
 
         <script>
+            /*
+             * Calculo de heranca seguindo as regras brasileiras:
+             * 1. Divide os bens comuns em meacao.
+             * 2. Soma os bens proprios a meacao.
+             * 3. Determina o total de herdeiros.
+             * 4. Separa a heranca em quota disponivel e quota legitima.
+             * 5. Distribui a quota legitima igualmente.
+             */
             function calcularHeranca(bensProprios, bensComuns, filhos, conjuge, pais) {
                 var meacaoValor = bensComuns / 2;
                 var herancaTotal = bensProprios + meacaoValor;
